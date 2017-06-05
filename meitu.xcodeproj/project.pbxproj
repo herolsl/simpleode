@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		26686C8A1E2DE8120006C334 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686C891E2DE8120006C334 /* main.m */; };
+		26686C8D1E2DE8120006C334 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686C8C1E2DE8120006C334 /* AppDelegate.m */; };
+		26686C901E2DE8120006C334 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686C8F1E2DE8120006C334 /* ViewController.m */; };
+		26686C931E2DE8120006C334 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26686C911E2DE8120006C334 /* Main.storyboard */; };
+		26686C951E2DE8120006C334 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26686C941E2DE8120006C334 /* Assets.xcassets */; };
+		26686C981E2DE8120006C334 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26686C961E2DE8120006C334 /* LaunchScreen.storyboard */; };
+		26686CA31E2DE8120006C334 /* meituTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686CA21E2DE8120006C334 /* meituTests.m */; };
+		26686CAE1E2DE8120006C334 /* meituUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686CAD1E2DE8120006C334 /* meituUITests.m */; };
+		26686CBD1E2DEB710006C334 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26686CBC1E2DEB710006C334 /* CoreImage.framework */; };
+		2C9F02AB1EE503D1004D3089 /* FingerDrawLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */; };
+		2C9F02AE1EE50587004D3089 /* FingerLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AD1EE50587004D3089 /* FingerLineInfo.m */; };
+		2C9F02B01EE50858004D3089 /* timg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2C9F02AF1EE50858004D3089 /* timg.jpg */; };
+		2C9F02B61EE53862004D3089 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02B51EE53862004D3089 /* VideoPlayer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		26686C9F1E2DE8120006C334 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26686C7D1E2DE8120006C334 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26686C841E2DE8120006C334;
+			remoteInfo = meitu;
+		};
+		26686CAA1E2DE8120006C334 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26686C7D1E2DE8120006C334 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26686C841E2DE8120006C334;
+			remoteInfo = meitu;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		26686C851E2DE8120006C334 /* meitu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = meitu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26686C891E2DE8120006C334 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		26686C8B1E2DE8120006C334 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		26686C8C1E2DE8120006C334 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		26686C8E1E2DE8120006C334 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		26686C8F1E2DE8120006C334 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		26686C921E2DE8120006C334 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		26686C941E2DE8120006C334 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		26686C971E2DE8120006C334 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		26686C991E2DE8120006C334 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26686C9E1E2DE8120006C334 /* meituTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = meituTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		26686CA21E2DE8120006C334 /* meituTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = meituTests.m; sourceTree = "<group>"; };
+		26686CA41E2DE8120006C334 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26686CA91E2DE8120006C334 /* meituUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = meituUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		26686CAD1E2DE8120006C334 /* meituUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = meituUITests.m; sourceTree = "<group>"; };
+		26686CAF1E2DE8120006C334 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26686CBC1E2DEB710006C334 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		2C9F02A91EE503D1004D3089 /* FingerDrawLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerDrawLine.h; sourceTree = "<group>"; };
+		2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FingerDrawLine.m; sourceTree = "<group>"; };
+		2C9F02AC1EE50587004D3089 /* FingerLineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerLineInfo.h; sourceTree = "<group>"; };
+		2C9F02AD1EE50587004D3089 /* FingerLineInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FingerLineInfo.m; sourceTree = "<group>"; };
+		2C9F02AF1EE50858004D3089 /* timg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = timg.jpg; sourceTree = "<group>"; };
+		2C9F02B41EE53862004D3089 /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
+		2C9F02B51EE53862004D3089 /* VideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26686C821E2DE8120006C334 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26686CBD1E2DEB710006C334 /* CoreImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686C9B1E2DE8120006C334 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686CA61E2DE8120006C334 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26686C7C1E2DE8120006C334 = {
+			isa = PBXGroup;
+			children = (
+				26686C871E2DE8120006C334 /* meitu */,
+				26686CA11E2DE8120006C334 /* meituTests */,
+				26686CAC1E2DE8120006C334 /* meituUITests */,
+				26686C861E2DE8120006C334 /* Products */,
+				26686CBB1E2DEB710006C334 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		26686C861E2DE8120006C334 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26686C851E2DE8120006C334 /* meitu.app */,
+				26686C9E1E2DE8120006C334 /* meituTests.xctest */,
+				26686CA91E2DE8120006C334 /* meituUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26686C871E2DE8120006C334 /* meitu */ = {
+			isa = PBXGroup;
+			children = (
+				2C9F02AF1EE50858004D3089 /* timg.jpg */,
+				26686C8B1E2DE8120006C334 /* AppDelegate.h */,
+				26686C8C1E2DE8120006C334 /* AppDelegate.m */,
+				26686C8E1E2DE8120006C334 /* ViewController.h */,
+				26686C8F1E2DE8120006C334 /* ViewController.m */,
+				2C9F02AC1EE50587004D3089 /* FingerLineInfo.h */,
+				2C9F02AD1EE50587004D3089 /* FingerLineInfo.m */,
+				2C9F02A91EE503D1004D3089 /* FingerDrawLine.h */,
+				2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */,
+				2C9F02B41EE53862004D3089 /* VideoPlayer.h */,
+				2C9F02B51EE53862004D3089 /* VideoPlayer.m */,
+				26686C911E2DE8120006C334 /* Main.storyboard */,
+				26686C941E2DE8120006C334 /* Assets.xcassets */,
+				26686C961E2DE8120006C334 /* LaunchScreen.storyboard */,
+				26686C991E2DE8120006C334 /* Info.plist */,
+				26686C881E2DE8120006C334 /* Supporting Files */,
+			);
+			path = meitu;
+			sourceTree = "<group>";
+		};
+		26686C881E2DE8120006C334 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				26686C891E2DE8120006C334 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		26686CA11E2DE8120006C334 /* meituTests */ = {
+			isa = PBXGroup;
+			children = (
+				26686CA21E2DE8120006C334 /* meituTests.m */,
+				26686CA41E2DE8120006C334 /* Info.plist */,
+			);
+			path = meituTests;
+			sourceTree = "<group>";
+		};
+		26686CAC1E2DE8120006C334 /* meituUITests */ = {
+			isa = PBXGroup;
+			children = (
+				26686CAD1E2DE8120006C334 /* meituUITests.m */,
+				26686CAF1E2DE8120006C334 /* Info.plist */,
+			);
+			path = meituUITests;
+			sourceTree = "<group>";
+		};
+		26686CBB1E2DEB710006C334 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26686CBC1E2DEB710006C334 /* CoreImage.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26686C841E2DE8120006C334 /* meitu */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26686CB21E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meitu" */;
+			buildPhases = (
+				26686C811E2DE8120006C334 /* Sources */,
+				26686C821E2DE8120006C334 /* Frameworks */,
+				26686C831E2DE8120006C334 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = meitu;
+			productName = meitu;
+			productReference = 26686C851E2DE8120006C334 /* meitu.app */;
+			productType = "com.apple.product-type.application";
+		};
+		26686C9D1E2DE8120006C334 /* meituTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26686CB51E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meituTests" */;
+			buildPhases = (
+				26686C9A1E2DE8120006C334 /* Sources */,
+				26686C9B1E2DE8120006C334 /* Frameworks */,
+				26686C9C1E2DE8120006C334 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26686CA01E2DE8120006C334 /* PBXTargetDependency */,
+			);
+			name = meituTests;
+			productName = meituTests;
+			productReference = 26686C9E1E2DE8120006C334 /* meituTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		26686CA81E2DE8120006C334 /* meituUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26686CB81E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meituUITests" */;
+			buildPhases = (
+				26686CA51E2DE8120006C334 /* Sources */,
+				26686CA61E2DE8120006C334 /* Frameworks */,
+				26686CA71E2DE8120006C334 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26686CAB1E2DE8120006C334 /* PBXTargetDependency */,
+			);
+			name = meituUITests;
+			productName = meituUITests;
+			productReference = 26686CA91E2DE8120006C334 /* meituUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26686C7D1E2DE8120006C334 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Sven Liu";
+				TargetAttributes = {
+					26686C841E2DE8120006C334 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 978YB2Z9NY;
+						ProvisioningStyle = Automatic;
+					};
+					26686C9D1E2DE8120006C334 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 26686C841E2DE8120006C334;
+					};
+					26686CA81E2DE8120006C334 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 26686C841E2DE8120006C334;
+					};
+				};
+			};
+			buildConfigurationList = 26686C801E2DE8120006C334 /* Build configuration list for PBXProject "meitu" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 26686C7C1E2DE8120006C334;
+			productRefGroup = 26686C861E2DE8120006C334 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26686C841E2DE8120006C334 /* meitu */,
+				26686C9D1E2DE8120006C334 /* meituTests */,
+				26686CA81E2DE8120006C334 /* meituUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26686C831E2DE8120006C334 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C9F02B01EE50858004D3089 /* timg.jpg in Resources */,
+				26686C981E2DE8120006C334 /* LaunchScreen.storyboard in Resources */,
+				26686C951E2DE8120006C334 /* Assets.xcassets in Resources */,
+				26686C931E2DE8120006C334 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686C9C1E2DE8120006C334 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686CA71E2DE8120006C334 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26686C811E2DE8120006C334 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C9F02AB1EE503D1004D3089 /* FingerDrawLine.m in Sources */,
+				2C9F02B61EE53862004D3089 /* VideoPlayer.m in Sources */,
+				26686C901E2DE8120006C334 /* ViewController.m in Sources */,
+				2C9F02AE1EE50587004D3089 /* FingerLineInfo.m in Sources */,
+				26686C8D1E2DE8120006C334 /* AppDelegate.m in Sources */,
+				26686C8A1E2DE8120006C334 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686C9A1E2DE8120006C334 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26686CA31E2DE8120006C334 /* meituTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26686CA51E2DE8120006C334 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26686CAE1E2DE8120006C334 /* meituUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		26686CA01E2DE8120006C334 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26686C841E2DE8120006C334 /* meitu */;
+			targetProxy = 26686C9F1E2DE8120006C334 /* PBXContainerItemProxy */;
+		};
+		26686CAB1E2DE8120006C334 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26686C841E2DE8120006C334 /* meitu */;
+			targetProxy = 26686CAA1E2DE8120006C334 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		26686C911E2DE8120006C334 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26686C921E2DE8120006C334 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		26686C961E2DE8120006C334 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26686C971E2DE8120006C334 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26686CB01E2DE8120006C334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		26686CB11E2DE8120006C334 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		26686CB31E2DE8120006C334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 978YB2Z9NY;
+				INFOPLIST_FILE = meitu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meitu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		26686CB41E2DE8120006C334 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 978YB2Z9NY;
+				INFOPLIST_FILE = meitu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meitu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		26686CB61E2DE8120006C334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = meituTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meituTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/meitu.app/meitu";
+			};
+			name = Debug;
+		};
+		26686CB71E2DE8120006C334 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = meituTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meituTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/meitu.app/meitu";
+			};
+			name = Release;
+		};
+		26686CB91E2DE8120006C334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = meituUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meituUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = meitu;
+			};
+			name = Debug;
+		};
+		26686CBA1E2DE8120006C334 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = meituUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.svenLiu.swiftTest.meituUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = meitu;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26686C801E2DE8120006C334 /* Build configuration list for PBXProject "meitu" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26686CB01E2DE8120006C334 /* Debug */,
+				26686CB11E2DE8120006C334 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26686CB21E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meitu" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26686CB31E2DE8120006C334 /* Debug */,
+				26686CB41E2DE8120006C334 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26686CB51E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meituTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26686CB61E2DE8120006C334 /* Debug */,
+				26686CB71E2DE8120006C334 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26686CB81E2DE8120006C334 /* Build configuration list for PBXNativeTarget "meituUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26686CB91E2DE8120006C334 /* Debug */,
+				26686CBA1E2DE8120006C334 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26686C7D1E2DE8120006C334 /* Project object */;
+}
