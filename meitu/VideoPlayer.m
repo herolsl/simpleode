@@ -49,6 +49,14 @@
     }
 }
 
+-(void)addProgressObserver{
+    
+    //get current playerItem object
+//    AVPlayerItem *playerItem = self.player.currentItem;
+//    //Set once per second
+//    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1f, NSEC_PER_SEC)  queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+//    }];
+}
 
 -(void)addObserverToPlayerItem:(AVPlayerItem *)playerItem{
     
@@ -58,15 +66,23 @@
     [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
 }
 
+- (void)removeObserverToPlayerItem:(AVPlayerItem *)playerItem {
+    [playerItem removeObserver:self forKeyPath:@"status"];
+    [playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+}
+
 /**
  *  通过KVO监控播放器状态
  */
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     AVPlayerItem *playerItem = object;
     if ([keyPath isEqualToString:@"status"]) {
-        AVPlayerStatus status = [[change objectForKey:@"new"] intValue];
+        AVPlayerStatus st = self.player.status;
+        AVPlayerItemStatus status = self.playerItem.status;
         NSLog(@"%@", @(status));
         NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
+        
+        [self playPause];
     }else if([keyPath isEqualToString:@"loadedTimeRanges"]){
         NSArray *array = playerItem.loadedTimeRanges;
         CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];//本次缓冲时间范围
@@ -88,26 +104,32 @@
 
 - (AVPlayer *)player {
     if (!_player) {
+        AVPlayerItem *playerItem = [self getAVPlayItem];
+        self.playerItem = playerItem;
         _player = [AVPlayer playerWithPlayerItem:self.playerItem];
         
+        [self addProgressObserver];
         [self addObserverToPlayerItem:self.playerItem];
+        
+        if (self.player.currentItem != self.playerItem) {
+            [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
+        }
     }
     return _player;
 }
 
-- (AVPlayerItem *)playerItem {
+- (AVPlayerItem *)getAVPlayItem {
     
     NSAssert(self.videoURL != nil, @"视频url不能为空!");
 
-    if (!_playerItem) {
-        if ([self.videoURL rangeOfString:@"http"].location == NSNotFound) {
-            AVAsset *movieAsset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:self.videoURL] options:nil];
-            _playerItem = [AVPlayerItem playerItemWithAsset:movieAsset];
-        } else {
-            _playerItem = [AVPlayerItem playerItemWithURL:[NSURL URLWithString:[self.videoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-        }
+    if ([self.videoURL rangeOfString:@"http"].location == NSNotFound) {
+        AVAsset *movieAsset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:self.videoURL] options:nil];
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:movieAsset];
+        return playerItem;
+    } else {
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:[NSURL URLWithString:[self.videoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        return playerItem;
     }
-    return _playerItem;
 }
 
 #pragma mark - destory
@@ -121,6 +143,8 @@
 
 - (void)dealloc {
     
+    [self.playerItem removeObserver:self forKeyPath:@"status"];
+    [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
 }
 
 

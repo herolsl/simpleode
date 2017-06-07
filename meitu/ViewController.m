@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "FingerDrawLine.h"
 #import "VideoPlayer.h"
+#import <AVFoundation/AVFoundation.h>
+#import "VideoSlider.h"
 
 @interface ViewController ()
 {
@@ -34,13 +36,41 @@
 //    [self addLineAct:nil];
 //    [self changeImage:inputImageView.image];
     
-    VideoPlayer *player = [[VideoPlayer alloc] initWithFrame:self.view.frame];
-    player.videoURL = @"http://flv2.bn.netease.com/videolib3/1706/05/gudXO1209/SD/gudXO1209-mobile.mp4";
-//    [player playPause];
-    [self.view addSubview:player];
-
+//    NSString *playString = @"http://flv2.bn.netease.com/videolib3/1706/05/gudXO1209/SD/gudXO1209-mobile.mp4";
+//    NSURL *url = [NSURL URLWithString:playString];
+//    //设置播放的项目
+//    AVPlayerItem *item = [[AVPlayerItem alloc] initWithURL:url];
+//    //初始化player对象
+//    AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:item];
+//    //设置播放页面
+//    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
+//    //设置播放页面的大小
+//    layer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300);
+//    layer.backgroundColor = [UIColor cyanColor].CGColor;
+//    //设置播放窗口和当前视图之间的比例显示内容
+//    layer.videoGravity = AVLayerVideoGravityResizeAspect;
+//    //添加播放视图到self.view
+//    [self.view.layer addSublayer:layer];
+//    AVPlayerItemStatus status = player.currentItem.status;
+//    
+//    [player play];
     
+    UISlider *sysSlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 20)];
+    sysSlider.minimumTrackTintColor = [UIColor redColor];
+    sysSlider.maximumTrackTintColor = [UIColor blackColor];
+    sysSlider.thumbTintColor = [UIColor blueColor];
+    [self.view addSubview:sysSlider];
+
+    VideoSlider *slider = [[VideoSlider alloc] initWithFrame:CGRectMake(20, 400, self.view.frame.size.width-40, 80)];
+    [self.view addSubview:slider];
+    
+//    VideoPlayer *player = [[VideoPlayer alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 250)];
+//    player.videoURL = @"http://flv2.bn.netease.com/videolib3/1706/05/gudXO1209/SD/gudXO1209-mobile.mp4";
+////    [player playPause];
+//    [self.view addSubview:player];
+
 }
+
 
 - (void)addLineAct:(id)sender{
     NSLog(@"测试按钮");

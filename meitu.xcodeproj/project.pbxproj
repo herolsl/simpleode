@@ -16,6 +16,7 @@
 		26686CA31E2DE8120006C334 /* meituTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686CA21E2DE8120006C334 /* meituTests.m */; };
 		26686CAE1E2DE8120006C334 /* meituUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686CAD1E2DE8120006C334 /* meituUITests.m */; };
 		26686CBD1E2DEB710006C334 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26686CBC1E2DEB710006C334 /* CoreImage.framework */; };
+		2C34E6981EE6B10900C1D9EB /* VideoSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C34E6971EE6B10900C1D9EB /* VideoSlider.m */; };
 		2C9F02AB1EE503D1004D3089 /* FingerDrawLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */; };
 		2C9F02AE1EE50587004D3089 /* FingerLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AD1EE50587004D3089 /* FingerLineInfo.m */; };
 		2C9F02B01EE50858004D3089 /* timg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2C9F02AF1EE50858004D3089 /* timg.jpg */; };
@@ -57,6 +58,10 @@
 		26686CAD1E2DE8120006C334 /* meituUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = meituUITests.m; sourceTree = "<group>"; };
 		26686CAF1E2DE8120006C334 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26686CBC1E2DEB710006C334 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		2C34E6961EE6B10900C1D9EB /* VideoSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoSlider.h; sourceTree = "<group>"; };
+		2C34E6971EE6B10900C1D9EB /* VideoSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoSlider.m; sourceTree = "<group>"; };
+		2C43AC751EE6564D0038B6CE /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		2C43AC771EE68DCB0038B6CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2C9F02A91EE503D1004D3089 /* FingerDrawLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerDrawLine.h; sourceTree = "<group>"; };
 		2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FingerDrawLine.m; sourceTree = "<group>"; };
 		2C9F02AC1EE50587004D3089 /* FingerLineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerLineInfo.h; sourceTree = "<group>"; };
@@ -127,6 +132,8 @@
 				2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */,
 				2C9F02B41EE53862004D3089 /* VideoPlayer.h */,
 				2C9F02B51EE53862004D3089 /* VideoPlayer.m */,
+				2C34E6961EE6B10900C1D9EB /* VideoSlider.h */,
+				2C34E6971EE6B10900C1D9EB /* VideoSlider.m */,
 				26686C911E2DE8120006C334 /* Main.storyboard */,
 				26686C941E2DE8120006C334 /* Assets.xcassets */,
 				26686C961E2DE8120006C334 /* LaunchScreen.storyboard */,
@@ -165,6 +172,8 @@
 		26686CBB1E2DEB710006C334 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C43AC771EE68DCB0038B6CE /* AVFoundation.framework */,
+				2C43AC751EE6564D0038B6CE /* ExternalAccessory.framework */,
 				26686CBC1E2DEB710006C334 /* CoreImage.framework */,
 			);
 			name = Frameworks;
@@ -306,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C9F02AB1EE503D1004D3089 /* FingerDrawLine.m in Sources */,
+				2C34E6981EE6B10900C1D9EB /* VideoSlider.m in Sources */,
 				2C9F02B61EE53862004D3089 /* VideoPlayer.m in Sources */,
 				26686C901E2DE8120006C334 /* ViewController.m in Sources */,
 				2C9F02AE1EE50587004D3089 /* FingerLineInfo.m in Sources */,
