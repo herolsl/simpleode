@@ -53,7 +53,11 @@
     [self addSubview:self.sliderAbove];
     
     self.sliderButton = [[UIView alloc] init];
-    self.sliderButton.backgroundColor = [UIColor brownColor];
+    self.sliderButton.backgroundColor = [UIColor whiteColor];
+    self.sliderButton.layer.shadowOffset = CGSizeMake(0, 3);
+    self.sliderButton.layer.shadowRadius = 3;
+    self.sliderButton.layer.shadowOpacity = 0.4f;
+    self.sliderButton.layer.shadowColor = [UIColor blackColor].CGColor;
     [self addSubview:self.sliderButton];
     
     [self addValueObserve];
@@ -72,7 +76,6 @@
         } else if (self.vsValue < 0 ) {
             self.vsValue = 0.f;
         }
-        self.vsLoadingValue = self.vsValue + 0.2;
         [self setNeedsLayout];
     }
 }
@@ -91,7 +94,7 @@
     if (self.vsLoadingValue > 1) {
         self.vsLoadingValue = 1.0f;
     }
-    [self.sliderMid setFrame:CGRectMake(self.vsValue*VS_WIDTH, VS_HEIGHT/2-LINE_HEIGHT, (self.vsLoadingValue-self.vsValue)*VS_WIDTH, LINE_HEIGHT)];
+    [self.sliderMid setFrame:CGRectMake(self.vsValue*VS_WIDTH+BUTTON_HEIGHT/3, VS_HEIGHT/2-LINE_HEIGHT, (self.vsLoadingValue-self.vsValue)*VS_WIDTH, LINE_HEIGHT)];
     
     [self.sliderAbove setFrame:CGRectMake(0, VS_HEIGHT/2-LINE_HEIGHT, self.vsValue*VS_WIDTH, LINE_HEIGHT)];
     self.sliderAbove.layer.cornerRadius = LINE_HEIGHT/2;
@@ -101,7 +104,7 @@
     if (self.vsValue*VS_WIDTH-BUTTON_HEIGHT/2 < 0) {
         btnCenterX = BUTTON_HEIGHT/2;
     } else if ((self.vsValue*VS_WIDTH+BUTTON_HEIGHT/2) > VS_WIDTH) {
-        btnCenterX = VS_WIDTH;
+        btnCenterX = VS_WIDTH-BUTTON_HEIGHT/2;
     } else {
         btnCenterX = self.vsValue*VS_WIDTH;
     }

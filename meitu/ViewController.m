@@ -55,11 +55,11 @@
 //    
 //    [player play];
     
-//    UISlider *sysSlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 20)];
-//    sysSlider.minimumTrackTintColor = [UIColor redColor];
-//    sysSlider.maximumTrackTintColor = [UIColor blackColor];
+    UISlider *sysSlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 20)];
+    sysSlider.minimumTrackTintColor = [UIColor redColor];
+    sysSlider.maximumTrackTintColor = [UIColor blackColor];
 //    sysSlider.thumbTintColor = [UIColor blueColor];
-//    [self.view addSubview:sysSlider];
+    [self.view addSubview:sysSlider];
 
     VideoSlider *slider = [[VideoSlider alloc] initWithFrame:CGRectMake(20, 400, self.view.frame.size.width-40, 80)];
     [self.view addSubview:slider];
