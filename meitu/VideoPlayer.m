@@ -11,9 +11,9 @@
 
 @interface VideoPlayer()
 
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong) AVPlayerItem *playerItem;
-@property (nonatomic, strong) AVPlayer *player;
+@property(nonatomic, strong) AVPlayerLayer *playerLayer;
+@property(nonatomic, strong) AVPlayerItem *playerItem;
+@property(nonatomic, strong) AVPlayer *player;
 
 @end
 

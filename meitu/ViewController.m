@@ -56,12 +56,15 @@
 //    [player play];
     
     UISlider *sysSlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 200, self.view.frame.size.width-40, 20)];
-    sysSlider.minimumTrackTintColor = [UIColor redColor];
-    sysSlider.maximumTrackTintColor = [UIColor blackColor];
+//    sysSlider.minimumTrackTintColor = [UIColor redColor];
+//    sysSlider.maximumTrackTintColor = [UIColor blackColor];
 //    sysSlider.thumbTintColor = [UIColor blueColor];
     [self.view addSubview:sysSlider];
 
     VideoSlider *slider = [[VideoSlider alloc] initWithFrame:CGRectMake(20, 400, self.view.frame.size.width-40, 80)];
+    slider.maxProgressColor = [UIColor lightGrayColor];
+    slider.bufferProgressColor = [UIColor darkGrayColor];
+    slider.currentProgressColor = [UIColor blackColor];
     [self.view addSubview:slider];
     
 //    VideoPlayer *player = [[VideoPlayer alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 250)];

@@ -6,26 +6,27 @@
 //  Copyright © 2017年 Sven Liu. All rights reserved.
 //
 
-#define POSITION_X      CGRectGetMinX(self.frame)
-#define POSITION_Y      CGRectGetMinY(self.frame)
-#define VS_WIDTH        CGRectGetWidth(self.frame)
-#define VS_HEIGHT       CGRectGetHeight(self.frame)
+#define POSITION_X      self.frame.origin.x
+#define POSITION_Y      self.frame.origin.y
+#define VS_WIDTH        self.frame.size.width
+#define VS_HEIGHT       self.frame.size.height
 
 #define LINE_HEIGHT     2
-#define BUTTON_HEIGHT   26
+#define BUTTON_HEIGHT   28
 
 #import "VideoSlider.h"
 
 @interface VideoSlider()
 
 // 进度条背景
-@property (nonatomic, strong) UIView *sliderBottom;
+@property(nonatomic, strong) UIView *sliderBottom;
 // 未滑动进度条
-@property (nonatomic, strong) UIImageView *sliderMid;
+@property(nonatomic, strong) UIImageView *sliderMid;
 // 已滑动进度条
-@property (nonatomic, strong) UIImageView *sliderAbove;
+@property(nonatomic, strong) UIImageView *sliderAbove;
 // 滑动按钮
-@property (nonatomic, strong) UIView *sliderButton;
+@property(nonatomic, strong) UIImageView *sliderButtonBack;
+@property(nonatomic, strong) UIImageView *sliderButton;
 
 @end
 
@@ -41,24 +42,30 @@
 
 - (void)creatStartUI {
     self.sliderBottom = [[UIView alloc] init];
-    self.sliderBottom.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:self.sliderBottom];
     
     self.sliderMid = [[UIImageView alloc] init];
-    self.sliderMid.backgroundColor = [UIColor blueColor];
     [self addSubview:self.sliderMid];
     
     self.sliderAbove = [[UIImageView alloc] init];
-    self.sliderAbove.backgroundColor = [UIColor redColor];
     [self addSubview:self.sliderAbove];
     
-    self.sliderButton = [[UIView alloc] init];
-    self.sliderButton.backgroundColor = [UIColor whiteColor];
+    self.sliderButton = [[UIImageView alloc] init];
+    self.sliderButton.userInteractionEnabled = YES;
     self.sliderButton.layer.shadowOffset = CGSizeMake(0, 3);
     self.sliderButton.layer.shadowRadius = 3;
     self.sliderButton.layer.shadowOpacity = 0.4f;
     self.sliderButton.layer.shadowColor = [UIColor blackColor].CGColor;
     [self addSubview:self.sliderButton];
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderValueChange:)];
+    [self.sliderButton addGestureRecognizer:pan];
+
+//    self.sliderButtonBack = [[UIImageView alloc] init];
+//    self.sliderButtonBack.image = [UIImage imageNamed:@"timg.jpg"];
+//    [self.sliderButtonBack setFrame:CGRectMake(0, 0, BUTTON_HEIGHT*2, BUTTON_HEIGHT*1.5)];
+//    self.sliderButtonBack.center = CGPointMake(BUTTON_HEIGHT/2, BUTTON_HEIGHT/2);
+//    self.sliderButtonBack.backgroundColor = [UIColor clearColor];
+//    [self.sliderButton addSubview:self.sliderButtonBack];
     
     [self addValueObserve];
 }
@@ -76,8 +83,34 @@
         } else if (self.vsValue < 0 ) {
             self.vsValue = 0.f;
         }
+        
+        if (self.vsLoadingValue > 1) {
+            self.vsLoadingValue = 1.0f;
+        }
+
         [self setNeedsLayout];
     }
+}
+
+#pragma mark - setMethods
+- (void)setMaxProgressColor:(UIColor *)maxProgressColor {
+    _maxProgressColor = maxProgressColor;
+    [self setNeedsDisplay];
+}
+
+- (void)setCurrentProgressColor:(UIColor *)currentProgressColor {
+    _currentProgressColor = currentProgressColor;
+    [self setNeedsDisplay];
+}
+
+- (void)setBufferProgressColor:(UIColor *)bufferProgressColor {
+    _bufferProgressColor = bufferProgressColor;
+    [self setNeedsDisplay];
+}
+
+- (void)setThumbColor:(UIColor *)thumbColor {
+    _thumbColor = thumbColor;
+    [self setNeedsDisplay];
 }
 
 #pragma mark - layoutSubviews
@@ -90,17 +123,21 @@
     }
     
     [self.sliderBottom setFrame:CGRectMake(self.vsValue*VS_WIDTH, VS_HEIGHT/2-LINE_HEIGHT, (1-self.vsValue)*VS_WIDTH, LINE_HEIGHT)];
+    self.sliderBottom.backgroundColor = self.maxProgressColor ? :[UIColor lightGrayColor];
     self.sliderBottom.layer.cornerRadius = LINE_HEIGHT/2;
-    if (self.vsLoadingValue > 1) {
-        self.vsLoadingValue = 1.0f;
+    
+    CGFloat midWidth = 0;
+    if ((self.vsLoadingValue-self.vsValue)*VS_WIDTH-BUTTON_HEIGHT/2 > 0) {
+        midWidth = (self.vsLoadingValue-self.vsValue)*VS_WIDTH-BUTTON_HEIGHT/2;
     }
-    [self.sliderMid setFrame:CGRectMake(self.vsValue*VS_WIDTH+BUTTON_HEIGHT/3, VS_HEIGHT/2-LINE_HEIGHT, (self.vsLoadingValue-self.vsValue)*VS_WIDTH, LINE_HEIGHT)];
+    [self.sliderMid setFrame:CGRectMake(self.vsValue*VS_WIDTH+BUTTON_HEIGHT/2, VS_HEIGHT/2-LINE_HEIGHT, midWidth, LINE_HEIGHT)];
+    self.sliderMid.backgroundColor = self.bufferProgressColor ? :[UIColor darkGrayColor];
     
     [self.sliderAbove setFrame:CGRectMake(0, VS_HEIGHT/2-LINE_HEIGHT, self.vsValue*VS_WIDTH, LINE_HEIGHT)];
+    self.sliderAbove.backgroundColor = self.currentProgressColor ? :[UIColor blueColor];
     self.sliderAbove.layer.cornerRadius = LINE_HEIGHT/2;
 
     CGFloat btnCenterX;
-    [self.sliderButton setFrame:CGRectMake(0, 0, BUTTON_HEIGHT, BUTTON_HEIGHT)];
     if (self.vsValue*VS_WIDTH-BUTTON_HEIGHT/2 < 0) {
         btnCenterX = BUTTON_HEIGHT/2;
     } else if ((self.vsValue*VS_WIDTH+BUTTON_HEIGHT/2) > VS_WIDTH) {
@@ -108,25 +145,15 @@
     } else {
         btnCenterX = self.vsValue*VS_WIDTH;
     }
+    [self.sliderButton setFrame:CGRectMake(0, 0, BUTTON_HEIGHT, BUTTON_HEIGHT)];
     [self.sliderButton setCenter:CGPointMake(btnCenterX, VS_HEIGHT/2)];
+    self.sliderButton.backgroundColor = self.thumbColor ? :[UIColor whiteColor];
     self.sliderButton.layer.cornerRadius = BUTTON_HEIGHT/2;
 }
 
-#pragma mark - touch event
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    UITouch *touch = [touches anyObject];
-    self.vsValue = [touch locationInView:self].x/VS_WIDTH;
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    NSArray *MovePointArray = [touches allObjects];
-    self.vsValue = [[MovePointArray objectAtIndex:0] locationInView:self].x/VS_WIDTH;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-
+#pragma mark - gestureRecognizer
+- (void)sliderValueChange:(UIGestureRecognizer *)gesture {
+    self.vsValue = [gesture locationInView:self].x/VS_WIDTH;
 }
 
 #pragma mark - dealloc

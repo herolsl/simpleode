@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "meitu/VideoSlider.m"
-            timestampString = "518511567.498254"
+            timestampString = "518601729.698892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "-creatStartUI"
             landmarkType = "7">
          </BreakpointContent>

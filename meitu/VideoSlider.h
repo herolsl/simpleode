@@ -9,9 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface VideoSlider : UIControl
-
-@property (nonatomic) CGFloat vsValue;
+@property(nonatomic) CGFloat vsValue;
 // 缓冲值
-@property (nonatomic) CGFloat vsLoadingValue;
+@property(nonatomic) CGFloat vsLoadingValue;
+
+@property(nonatomic, strong) UIColor *maxProgressColor;
+@property(nonatomic, strong) UIColor *currentProgressColor;
+@property(nonatomic, strong) UIColor *bufferProgressColor;
+@property(nonatomic, strong) UIColor *thumbColor;
+
+@property(nonatomic, strong) UIImage *thumbImage;
 
 @end

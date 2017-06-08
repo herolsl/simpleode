@@ -10,7 +10,7 @@
 
 @interface VideoPlayer : UIView
 
-@property (nonatomic, copy) NSString *videoURL;
+@property(nonatomic, copy) NSString *videoURL;
 
 - (void)playPause;
 
