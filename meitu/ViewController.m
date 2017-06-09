@@ -67,10 +67,10 @@
     slider.currentProgressColor = [UIColor blackColor];
     [self.view addSubview:slider];
     
-//    VideoPlayer *player = [[VideoPlayer alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 250)];
-//    player.videoURL = @"http://flv2.bn.netease.com/videolib3/1706/05/gudXO1209/SD/gudXO1209-mobile.mp4";
-////    [player playPause];
-//    [self.view addSubview:player];
+    VideoPlayer *player = [[VideoPlayer alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 250)];
+    player.videoURL = @"http://flv2.bn.netease.com/videolib3/1706/05/gudXO1209/SD/gudXO1209-mobile.mp4";
+//    [player playPause];
+    [self.view addSubview:player];
 
 }
 
