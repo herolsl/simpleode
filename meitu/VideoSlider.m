@@ -154,12 +154,53 @@
 #pragma mark - gestureRecognizer
 - (void)sliderValueChange:(UIGestureRecognizer *)gesture {
     self.vsValue = [gesture locationInView:self].x/VS_WIDTH;
+    
+//    NSSet *tar = [self allTargets];
+//    NSEnumerator *em = [tar objectEnumerator];
+//    id target;
+//    while (target = [em nextObject]) {
+//        id tarr = [tar anyObject];
+//        NSArray *arr = [self actionsForTarget:tarr forControlEvent:UIControlEventValueChanged];
+//        [tarr performSelector:NSSelectorFromString(arr[0])];
+//        NSLog(@"action is %@", arr);
+//    }
+//    
+//    NSLog(@"event is %@", @(self.allControlEvents));
+//    NSLog(@"%@", self.allTargets);
 }
 
 #pragma mark - dealloc
 - (void)dealloc {
     [self removeObserver:self forKeyPath:@"vsValue"];
     [self removeObserver:self forKeyPath:@"vsLoadingValue"];
+}
+
+#pragma mark - super methods
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
+    NSLog(@"begin state=[%zd]", self.state);
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    return YES;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
+    NSLog(@"continue state=[%zd]", self.state);
+    self.vsValue = [touch locationInView:self].x/VS_WIDTH;
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    return YES;
+}
+
+// 当点击屏幕释放时，调用该方法
+- (void)endTrackingWithTouch:(nullable UITouch *)touch withEvent:(nullable UIEvent *)event {
+    NSLog(@"end state=[%zd]", self.state);
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
+}
+
+// 取消时会调用，如果当前视图被移除。或者来电
+- (void)cancelTrackingWithEvent:(nullable UIEvent *)event {
+    NSLog(@"cancel state=[%zd]", self.state);
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    [super cancelTrackingWithEvent:event];  // 系统默认处理
 }
 
 @end

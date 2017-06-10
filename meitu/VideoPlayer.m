@@ -16,6 +16,7 @@
 #import "VideoPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "VideoSlider.h"
 
 typedef enum : NSUInteger {
     kPanGesturemMoveNone,
@@ -36,6 +37,7 @@ typedef enum : NSUInteger {
 
 @property(nonatomic, strong) UIView *bottomBar;
 @property(nonatomic, strong) UILabel *progressLabel;
+@property(nonatomic, strong) VideoSlider *videoSlider;
 
 @end
 
@@ -70,6 +72,14 @@ typedef enum : NSUInteger {
     UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(40, 0, 35, 35)];
     next.backgroundColor = [UIColor redColor];
     [self.bottomBar addSubview:next];
+    
+    self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(80, 0, VS_WIDTH-100, 35)];
+    [self.videoSlider addTarget:self action:@selector(printLog:) forControlEvents:UIControlEventValueChanged];
+    [self.bottomBar addSubview:self.videoSlider];
+}
+
+- (void)printLog:(VideoSlider *)sender {
+    NSLog(@"value is %@", @(sender.vsValue));
 }
 
 - (void)setVideoURL:(NSString *)videoURL {
@@ -136,7 +146,7 @@ typedef enum : NSUInteger {
         }
     }
     
-    NSLog(@"state is %@", @(self.currentDirection));
+//    NSLog(@"state is %@", @(self.currentDirection));
     BOOL isFullScreen = VS_WIDTH == [UIScreen mainScreen].bounds.size.width ? NO:YES;
     CGPoint touchPoint = [sender locationInView:self];
     CGPoint transPoint = [sender translationInView:self];
