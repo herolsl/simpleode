@@ -28,6 +28,9 @@
 @property(nonatomic, strong) UIImageView *sliderButtonBack;
 @property(nonatomic, strong) UIImageView *sliderButton;
 
+
+@property(nonatomic) BOOL isPressButton;
+
 @end
 
 @implementation VideoSlider
@@ -51,22 +54,15 @@
     [self addSubview:self.sliderAbove];
     
     self.sliderButton = [[UIImageView alloc] init];
-    self.sliderButton.userInteractionEnabled = YES;
+//    self.sliderButton.userInteractionEnabled = NO;
     self.sliderButton.layer.shadowOffset = CGSizeMake(0, 3);
     self.sliderButton.layer.shadowRadius = 3;
     self.sliderButton.layer.shadowOpacity = 0.4f;
     self.sliderButton.layer.shadowColor = [UIColor blackColor].CGColor;
     [self addSubview:self.sliderButton];
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderValueChange:)];
-    [self.sliderButton addGestureRecognizer:pan];
+//    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderValueChange:)];
+//    [self.sliderButton addGestureRecognizer:pan];
 
-//    self.sliderButtonBack = [[UIImageView alloc] init];
-//    self.sliderButtonBack.image = [UIImage imageNamed:@"timg.jpg"];
-//    [self.sliderButtonBack setFrame:CGRectMake(0, 0, BUTTON_HEIGHT*2, BUTTON_HEIGHT*1.5)];
-//    self.sliderButtonBack.center = CGPointMake(BUTTON_HEIGHT/2, BUTTON_HEIGHT/2);
-//    self.sliderButtonBack.backgroundColor = [UIColor clearColor];
-//    [self.sliderButton addSubview:self.sliderButtonBack];
-    
     [self addValueObserve];
 }
 
@@ -178,20 +174,27 @@
 #pragma mark - super methods
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
     NSLog(@"begin state=[%zd]", self.state);
+    
+    CGPoint startPoint = [touch locationInView:self.sliderButton];
+    self.isPressButton = CGRectContainsPoint(self.sliderButton.bounds, startPoint);
+    NSLog(@"Inside state======[%zd]", self.isPressButton);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     return YES;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
     NSLog(@"continue state=[%zd]", self.state);
-    self.vsValue = [touch locationInView:self].x/VS_WIDTH;
-    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    if (self.isPressButton) {
+        self.vsValue = [touch locationInView:self].x/VS_WIDTH;
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
     return YES;
 }
 
 // 当点击屏幕释放时，调用该方法
 - (void)endTrackingWithTouch:(nullable UITouch *)touch withEvent:(nullable UIEvent *)event {
     NSLog(@"end state=[%zd]", self.state);
+    self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
 }
@@ -199,6 +202,7 @@
 // 取消时会调用，如果当前视图被移除。或者来电
 - (void)cancelTrackingWithEvent:(nullable UIEvent *)event {
     NSLog(@"cancel state=[%zd]", self.state);
+    self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     [super cancelTrackingWithEvent:event];  // 系统默认处理
 }
