@@ -173,8 +173,7 @@
 
 #pragma mark - super methods
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
-    NSLog(@"begin state=[%zd]", self.state);
-    
+//    NSLog(@"begin state=[%zd]", self.state);
     CGPoint startPoint = [touch locationInView:self.sliderButton];
     self.isPressButton = CGRectContainsPoint(self.sliderButton.bounds, startPoint);
     NSLog(@"Inside state======[%zd]", self.isPressButton);
@@ -183,7 +182,7 @@
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
-    NSLog(@"continue state=[%zd]", self.state);
+//    NSLog(@"continue state=[%zd]", self.state);
     if (self.isPressButton) {
         self.vsValue = [touch locationInView:self].x/VS_WIDTH;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -193,18 +192,39 @@
 
 // 当点击屏幕释放时，调用该方法
 - (void)endTrackingWithTouch:(nullable UITouch *)touch withEvent:(nullable UIEvent *)event {
-    NSLog(@"end state=[%zd]", self.state);
+//    NSLog(@"end state=[%zd]", self.state);
     self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
-    [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
+//    [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
 }
 
 // 取消时会调用，如果当前视图被移除。或者来电
 - (void)cancelTrackingWithEvent:(nullable UIEvent *)event {
-    NSLog(@"cancel state=[%zd]", self.state);
+//    NSLog(@"cancel state=[%zd]", self.state);
     self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
-    [super cancelTrackingWithEvent:event];  // 系统默认处理
+//    [super cancelTrackingWithEvent:event];  // 系统默认处理
 }
+
+// 屏蔽父视图相应滑动操作
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return NO;
+    }
+    return YES;
+}
+
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+//
+//    return self;
+//}
+
+//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+//    if (CGRectContainsPoint(self.bounds, point)) {
+//        return YES;
+//    } else {
+//        return NO;
+//    }
+//}
 
 @end

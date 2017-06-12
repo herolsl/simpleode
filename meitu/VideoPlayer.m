@@ -112,7 +112,7 @@ typedef enum : NSUInteger {
             [UIView animateWithDuration:0.3f animations:^{
                 self.bottomBar.layer.opacity = 0.f;
             } completion:^(BOOL finished) {
-//                self.bottomBar.hidden = YES;
+                self.bottomBar.hidden = YES;
             }];
     }
 }
