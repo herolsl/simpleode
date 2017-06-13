@@ -162,7 +162,7 @@
 //    }
 //    
 //    NSLog(@"event is %@", @(self.allControlEvents));
-//    NSLog(@"%@", self.allTargets);
+//    NSLog(@"%@", self.allTargets)、;
 }
 
 #pragma mark - dealloc

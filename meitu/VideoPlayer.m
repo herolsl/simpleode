@@ -39,6 +39,8 @@ typedef enum : NSUInteger {
 @property(nonatomic, strong) UILabel *progressLabel;
 @property(nonatomic, strong) VideoSlider *videoSlider;
 
+@property(nonatomic) CGFloat currentProgress;
+
 @end
 
 @implementation VideoPlayer
@@ -65,17 +67,26 @@ typedef enum : NSUInteger {
     self.bottomBar.hidden = NO;
     [self addSubview:self.bottomBar];
     
-    UIButton *play = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    UIButton *play = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     play.backgroundColor = [UIColor redColor];
     [self.bottomBar addSubview:play];
 
-    UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(40, 0, 35, 35)];
+    UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
     next.backgroundColor = [UIColor redColor];
     [self.bottomBar addSubview:next];
     
-    self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(80, 0, VS_WIDTH-100, 35)];
+    self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(70, 0, VS_WIDTH-190, 30)];
     [self.videoSlider addTarget:self action:@selector(printLog:) forControlEvents:UIControlEventValueChanged];
     [self.bottomBar addSubview:self.videoSlider];
+    
+    self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(VS_WIDTH-110, 0, 70, 30)];
+    self.progressLabel.textColor = [UIColor whiteColor];
+    self.progressLabel.font = [UIFont systemFontOfSize:10.0f];
+    [self.bottomBar addSubview:self.progressLabel];
+    
+    UIButton *fullScreen = [[UIButton alloc] initWithFrame:CGRectMake(VS_WIDTH-35, 0, 30, 30)];
+    fullScreen.backgroundColor = [UIColor redColor];
+    [self.bottomBar addSubview:fullScreen];
 }
 
 - (void)printLog:(VideoSlider *)sender {
@@ -160,6 +171,8 @@ typedef enum : NSUInteger {
                 CGPoint transPoint = [sender translationInView:self];
                 [self volumeChange:transPoint.y>0 ? 0.015:(-0.015)];
             }
+        } else {
+//            self.videoSlider.vsValue
         }
     } else {
         if (self.currentDirection == kPanGesturemMoveHorizontal) {
@@ -176,13 +189,20 @@ typedef enum : NSUInteger {
 
 #pragma mark - observers
 
--(void)addProgressObserver{
+-(void)addProgressObserver {
     
-    //get current playerItem object
-//    AVPlayerItem *playerItem = self.player.currentItem;
-//    //Set once per second
-//    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1f, NSEC_PER_SEC)  queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-//    }];
+    AVPlayerItem *playerItem = self.player.currentItem;
+    __weak typeof(self) weakSelf = self;
+    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1f, NSEC_PER_SEC)  queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        
+        __strong typeof(weakSelf)strongSelf = weakSelf;
+        float current = CMTimeGetSeconds(time);
+//        weakSelf.current = current;
+        float total = CMTimeGetSeconds([playerItem duration]);
+        strongSelf.currentProgress = current/total;
+        NSLog(@"====vsValue is %.2f", weakSelf.currentProgress);
+        weakSelf.progressLabel.text = [NSString stringWithFormat:@"%@/%@", [weakSelf timeFormatted:current], [weakSelf timeFormatted:total]];
+    }];
 }
 
 -(void)addObserverToPlayerItem:(AVPlayerItem *)playerItem{
@@ -210,12 +230,26 @@ typedef enum : NSUInteger {
         NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
         
         [self playPause];
-    }else if([keyPath isEqualToString:@"loadedTimeRanges"]){
+    } else if([keyPath isEqualToString:@"loadedTimeRanges"]) {
 //        NSArray *array = playerItem.loadedTimeRanges;
 //        CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];//本次缓冲时间范围
+    } else if ([keyPath isEqualToString:@"currentProgress"]) {
+        self.videoSlider.vsValue = self.currentProgress;
+        NSLog(@"vsValue is %.2f", self.videoSlider.vsValue);
     }
 }
 
+#pragma mark - timeFormat
+
+- (NSString *)timeFormatted:(int)totalSeconds {
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    if (minutes <= 0) {
+        return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    }
+    return [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
+}
 
 #pragma mark - lazy loading
 
@@ -237,6 +271,7 @@ typedef enum : NSUInteger {
         
         [self addProgressObserver];
         [self addObserverToPlayerItem:self.playerItem];
+        [self addObserver:self forKeyPath:@"currentProgerss" options:NSKeyValueObservingOptionNew context:nil];
         
         if (self.player.currentItem != self.playerItem) {
             [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
@@ -279,6 +314,7 @@ typedef enum : NSUInteger {
     
     [self.playerItem removeObserver:self forKeyPath:@"status"];
     [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [self removeObserver:self forKeyPath:@"currentProgress"];
 }
 
 #pragma mark - system volume
