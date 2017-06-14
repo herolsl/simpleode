@@ -40,6 +40,7 @@ typedef enum : NSUInteger {
 @property(nonatomic, strong) VideoSlider *videoSlider;
 
 @property(nonatomic) CGFloat currentProgress;
+@property(nonatomic) CGFloat vpDurtaion;
 
 @end
 
@@ -49,12 +50,15 @@ typedef enum : NSUInteger {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor blackColor];
+//        self.currentProgress = 0.0f;
         [self creatInitialUI];
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureAction:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(tapGestureAction:)];
         [self addGestureRecognizer:tap];
         
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureAction:)];
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(panGestureAction:)];
         [self addGestureRecognizer:pan];
     }
     return self;
@@ -76,7 +80,8 @@ typedef enum : NSUInteger {
     [self.bottomBar addSubview:next];
     
     self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(70, 0, VS_WIDTH-190, 30)];
-    [self.videoSlider addTarget:self action:@selector(printLog:) forControlEvents:UIControlEventValueChanged];
+    [self.videoSlider addTarget:self action:@selector(printLog:)
+               forControlEvents:UIControlEventValueChanged];
     [self.bottomBar addSubview:self.videoSlider];
     
     self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(VS_WIDTH-110, 0, 70, 30)];
@@ -90,7 +95,18 @@ typedef enum : NSUInteger {
 }
 
 - (void)printLog:(VideoSlider *)sender {
-    NSLog(@"value is %@", @(sender.vsValue));
+    
+    [self.player pause];
+    if (sender.vsState == VideoSliderStateEnded) {
+        CMTime currentCMTime = CMTimeMake(self.videoSlider.vsValue * self.vpDurtaion, 1);
+        [self.player seekToTime:currentCMTime completionHandler:^(BOOL finished) {
+            [self.player play];
+        }];
+    } else if (sender.vsState == VideoSliderStateChanging) {
+        self.progressLabel.text = [NSString stringWithFormat:@"%@/%@",
+                                   [self timeFormatted:sender.vsValue*self.vpDurtaion],
+                                   [self timeFormatted:self.vpDurtaion]];
+    }
 }
 
 - (void)setVideoURL:(NSString *)videoURL {
@@ -193,15 +209,14 @@ typedef enum : NSUInteger {
     
     AVPlayerItem *playerItem = self.player.currentItem;
     __weak typeof(self) weakSelf = self;
-    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1f, NSEC_PER_SEC)  queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1f, NSEC_PER_SEC) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         
         __strong typeof(weakSelf)strongSelf = weakSelf;
         float current = CMTimeGetSeconds(time);
-//        weakSelf.current = current;
         float total = CMTimeGetSeconds([playerItem duration]);
         strongSelf.currentProgress = current/total;
-        NSLog(@"====vsValue is %.2f", weakSelf.currentProgress);
-        weakSelf.progressLabel.text = [NSString stringWithFormat:@"%@/%@", [weakSelf timeFormatted:current], [weakSelf timeFormatted:total]];
+        weakSelf.progressLabel.text = [NSString stringWithFormat:@"%@/%@",
+                                       [weakSelf timeFormatted:current], [weakSelf timeFormatted:total]];
     }];
 }
 
@@ -210,7 +225,7 @@ typedef enum : NSUInteger {
     //监控状态属性，注意AVPlayer也有一个status属性，通过监控它的status也可以获得播放状态
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     //network loading progress
-    [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
+    [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)removeObserverToPlayerItem:(AVPlayerItem *)playerItem {
@@ -221,11 +236,17 @@ typedef enum : NSUInteger {
 /**
  *  通过KVO监控播放器状态
  */
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    
     AVPlayerItem *playerItem = object;
     if ([keyPath isEqualToString:@"status"]) {
-//        AVPlayerStatus st = self.player.status;
         AVPlayerItemStatus status = self.playerItem.status;
+        if(status == AVPlayerStatusReadyToPlay){
+            self.vpDurtaion = CMTimeGetSeconds(playerItem.duration);
+        }
         NSLog(@"%@", @(status));
         NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
         
@@ -234,8 +255,10 @@ typedef enum : NSUInteger {
 //        NSArray *array = playerItem.loadedTimeRanges;
 //        CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];//本次缓冲时间范围
     } else if ([keyPath isEqualToString:@"currentProgress"]) {
+        if (isnan(self.currentProgress)) {
+            self.currentProgress = 0.0f;
+        }
         self.videoSlider.vsValue = self.currentProgress;
-        NSLog(@"vsValue is %.2f", self.videoSlider.vsValue);
     }
 }
 
@@ -271,7 +294,7 @@ typedef enum : NSUInteger {
         
         [self addProgressObserver];
         [self addObserverToPlayerItem:self.playerItem];
-        [self addObserver:self forKeyPath:@"currentProgerss" options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver:self forKeyPath:@"currentProgress" options:NSKeyValueObservingOptionOld context:nil];
         
         if (self.player.currentItem != self.playerItem) {
             [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
@@ -333,7 +356,6 @@ typedef enum : NSUInteger {
     }
     return volumeViewSlider;
 }
-
 
 /*
  *获取系统音量大小

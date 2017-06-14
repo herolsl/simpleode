@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, VideoSliderState) {
+    VideoSliderStateNone,           // defult state
+    VideoSliderStateBegan,
+    VideoSliderStateChanging,
+    VideoSliderStateEnded,
+    VideoSliderStateCancelled
+};
+
 @interface VideoSlider : UIControl
+
 @property(nonatomic) CGFloat vsValue;
 // 缓冲值
 @property(nonatomic) CGFloat vsLoadingValue;
 
+@property(nonatomic) VideoSliderState vsState;
 @property(nonatomic, strong) UIColor *maxProgressColor;
 @property(nonatomic, strong) UIColor *currentProgressColor;
 @property(nonatomic, strong) UIColor *bufferProgressColor;

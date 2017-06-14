@@ -29,7 +29,7 @@
 @property(nonatomic, strong) UIImageView *sliderButton;
 
 
-@property(nonatomic) BOOL isPressButton;
+@property(nonatomic) BOOL isPressButton;        // 手势的第一接触点是否在滑块内
 
 @end
 
@@ -174,15 +174,16 @@
 #pragma mark - super methods
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
 //    NSLog(@"begin state=[%zd]", self.state);
+    self.vsState = VideoSliderStateBegan;
     CGPoint startPoint = [touch locationInView:self.sliderButton];
     self.isPressButton = CGRectContainsPoint(self.sliderButton.bounds, startPoint);
-    NSLog(@"Inside state======[%zd]", self.isPressButton);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     return YES;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
 //    NSLog(@"continue state=[%zd]", self.state);
+    self.vsState = VideoSliderStateChanging;
     if (self.isPressButton) {
         self.vsValue = [touch locationInView:self].x/VS_WIDTH;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -193,6 +194,7 @@
 // 当点击屏幕释放时，调用该方法
 - (void)endTrackingWithTouch:(nullable UITouch *)touch withEvent:(nullable UIEvent *)event {
 //    NSLog(@"end state=[%zd]", self.state);
+    self.vsState = VideoSliderStateEnded;
     self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 //    [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
@@ -201,6 +203,7 @@
 // 取消时会调用，如果当前视图被移除。或者来电
 - (void)cancelTrackingWithEvent:(nullable UIEvent *)event {
 //    NSLog(@"cancel state=[%zd]", self.state);
+    self.vsState = VideoSliderStateCancelled;
     self.isPressButton = NO;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 //    [super cancelTrackingWithEvent:event];  // 系统默认处理
