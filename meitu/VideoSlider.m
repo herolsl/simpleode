@@ -11,10 +11,10 @@
 #define VS_WIDTH        self.frame.size.width
 #define VS_HEIGHT       self.frame.size.height
 
-#define LINE_HEIGHT     2
-#define BUTTON_HEIGHT   28
-
 #import "VideoSlider.h"
+
+static const CGFloat LINE_HEIGHT = 2;
+static const CGFloat BUTTON_HEIGHT = 28;
 
 @interface VideoSlider()
 
@@ -130,7 +130,7 @@
     self.sliderMid.backgroundColor = self.bufferProgressColor ? :[UIColor darkGrayColor];
     
     [self.sliderAbove setFrame:CGRectMake(0, VS_HEIGHT/2-LINE_HEIGHT, self.vsValue*VS_WIDTH, LINE_HEIGHT)];
-    self.sliderAbove.backgroundColor = self.currentProgressColor ? :[UIColor blueColor];
+    self.sliderAbove.backgroundColor = self.currentProgressColor ? :[UIColor whiteColor];
     self.sliderAbove.layer.cornerRadius = LINE_HEIGHT/2;
 
     CGFloat btnCenterX;

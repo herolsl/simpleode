@@ -11,12 +11,12 @@
 #define VS_WIDTH        self.frame.size.width
 #define VS_HEIGHT       self.frame.size.height
 
-#define VS_BAR_HEIGHT       44
-
 #import "VideoPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "VideoSlider.h"
+
+static const NSInteger VS_BAR_HEIGHT = 44;
 
 typedef enum : NSUInteger {
     kPanGesturemMoveNone,
@@ -50,7 +50,7 @@ typedef enum : NSUInteger {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor blackColor];
-//        self.currentProgress = 0.0f;
+        self.currentProgress = 0.0f;
         [self creatInitialUI];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -80,7 +80,8 @@ typedef enum : NSUInteger {
     [self.bottomBar addSubview:next];
     
     self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(70, 0, VS_WIDTH-190, 30)];
-    [self.videoSlider addTarget:self action:@selector(printLog:)
+    [self.videoSlider addTarget:self
+                         action:@selector(sliderAction:)
                forControlEvents:UIControlEventValueChanged];
     [self.bottomBar addSubview:self.videoSlider];
     
@@ -94,7 +95,7 @@ typedef enum : NSUInteger {
     [self.bottomBar addSubview:fullScreen];
 }
 
-- (void)printLog:(VideoSlider *)sender {
+- (void)sliderAction:(VideoSlider *)sender {
     
     [self.player pause];
     if (sender.vsState == VideoSliderStateEnded) {
@@ -222,10 +223,14 @@ typedef enum : NSUInteger {
 
 -(void)addObserverToPlayerItem:(AVPlayerItem *)playerItem{
     
-    //监控状态属性，注意AVPlayer也有一个status属性，通过监控它的status也可以获得播放状态
+    // 监控状态属性，注意AVPlayer也有一个status属性，通过监控它的status也可以获得播放状态
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
-    //network loading progress
+    // 监控缓冲数据
     [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionOld context:nil];
+    // 监控是否缓冲不足，会自动暂停播放
+    [playerItem addObserver:self forKeyPath:@"playbackBufferEmpty" options:NSKeyValueObservingOptionNew context:nil];
+    // 监控缓冲足够播放
+    [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)removeObserverToPlayerItem:(AVPlayerItem *)playerItem {
@@ -243,22 +248,45 @@ typedef enum : NSUInteger {
     
     AVPlayerItem *playerItem = object;
     if ([keyPath isEqualToString:@"status"]) {
+        
         AVPlayerItemStatus status = self.playerItem.status;
         if(status == AVPlayerStatusReadyToPlay){
             self.vpDurtaion = CMTimeGetSeconds(playerItem.duration);
         }
         NSLog(@"%@", @(status));
         NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
-        
         [self playPause];
+        
     } else if([keyPath isEqualToString:@"loadedTimeRanges"]) {
-//        NSArray *array = playerItem.loadedTimeRanges;
-//        CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];//本次缓冲时间范围
+        
+        NSArray *array = playerItem.loadedTimeRanges;
+        //本次缓冲时间范围
+        CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];
+        float startSeconds = CMTimeGetSeconds(timeRange.start);
+        float durationSeconds = CMTimeGetSeconds(timeRange.duration);
+        
+        if (self.vpDurtaion) {
+            CGFloat loadBuffer = (startSeconds + durationSeconds)/self.vpDurtaion;
+            self.videoSlider.vsLoadingValue = loadBuffer;
+            NSLog(@"缓冲数据： %@", @(loadBuffer));
+        }
+        
     } else if ([keyPath isEqualToString:@"currentProgress"]) {
+        
         if (isnan(self.currentProgress)) {
             self.currentProgress = 0.0f;
         }
         self.videoSlider.vsValue = self.currentProgress;
+        
+    } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
+        //监听播放器在缓冲数据的状态
+        NSLog(@"缓冲不足暂停了");
+        
+    } else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
+        
+        NSLog(@"缓冲达到可播放程度了");
+        //由于 AVPlayer 缓存不足就会自动暂停，所以缓存充足了需要手动播放，才能继续播放
+        [self.player play];
     }
 }
 
