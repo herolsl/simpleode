@@ -236,6 +236,8 @@ typedef enum : NSUInteger {
 - (void)removeObserverToPlayerItem:(AVPlayerItem *)playerItem {
     [playerItem removeObserver:self forKeyPath:@"status"];
     [playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
+    [playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
 }
 
 /**
