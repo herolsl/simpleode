@@ -54,7 +54,6 @@ static const CGFloat BUTTON_HEIGHT = 28;
     [self addSubview:self.sliderAbove];
     
     self.sliderButton = [[UIImageView alloc] init];
-//    self.sliderButton.userInteractionEnabled = NO;
     self.sliderButton.layer.shadowOffset = CGSizeMake(0, 3);
     self.sliderButton.layer.shadowRadius = 3;
     self.sliderButton.layer.shadowOpacity = 0.4f;
@@ -150,19 +149,6 @@ static const CGFloat BUTTON_HEIGHT = 28;
 #pragma mark - gestureRecognizer
 - (void)sliderValueChange:(UIGestureRecognizer *)gesture {
     self.vsValue = [gesture locationInView:self].x/VS_WIDTH;
-    
-//    NSSet *tar = [self allTargets];
-//    NSEnumerator *em = [tar objectEnumerator];
-//    id target;
-//    while (target = [em nextObject]) {
-//        id tarr = [tar anyObject];
-//        NSArray *arr = [self actionsForTarget:tarr forControlEvent:UIControlEventValueChanged];
-//        [tarr performSelector:NSSelectorFromString(arr[0])];
-//        NSLog(@"action is %@", arr);
-//    }
-//    
-//    NSLog(@"event is %@", @(self.allControlEvents));
-//    NSLog(@"%@", self.allTargets)、;
 }
 
 #pragma mark - dealloc

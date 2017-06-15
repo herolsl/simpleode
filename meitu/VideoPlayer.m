@@ -74,13 +74,11 @@ typedef enum : NSUInteger {
     UIButton *play = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"] forState:UIControlStateNormal];
     [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"] forState:UIControlStateSelected];
-//    play.backgroundColor = [UIColor redColor];
     play.center = CGPointMake(CGRectGetMidX(play.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:play];
 
     UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
     [next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"] forState:UIControlStateNormal];
-//    next.backgroundColor = [UIColor redColor];
     next.center = CGPointMake(CGRectGetMidX(next.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:next];
     
@@ -99,7 +97,6 @@ typedef enum : NSUInteger {
     
     UIButton *fullScreen = [[UIButton alloc] initWithFrame:CGRectMake(VS_WIDTH-35, 0, 30, 30)];
     [fullScreen setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_maximize.png"] forState:UIControlStateNormal];
-//    fullScreen.backgroundColor = [UIColor redColor];
     fullScreen.center = CGPointMake(CGRectGetMidX(fullScreen.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:fullScreen];
 }
@@ -183,19 +180,21 @@ typedef enum : NSUInteger {
         }
     }
     
-//    NSLog(@"state is %@", @(self.currentDirection));
     BOOL isFullScreen = VS_WIDTH == [UIScreen mainScreen].bounds.size.width ? NO:YES;
     CGPoint touchPoint = [sender locationInView:self];
+    NSLog(@"touchPoint is x:%@,   y:%@", @(touchPoint.x), @(touchPoint.y));
+
     CGPoint transPoint = [sender translationInView:self];
     
     if (isFullScreen) {
         if (self.currentDirection == kPanGesturemMoveHorizontal) {
             // 音量与亮度调节
             if (touchPoint.y < VS_HEIGHT/2) {
-                [self brightnessChange:transPoint.y>0 ? 0.015:(-0.015)];
+//                [self brightnessChange:transPoint.y>0 ? 0.015:(-0.015)];
+                [self brightnessChange:transPoint.y/VS_HEIGHT];
             } else {
                 CGPoint transPoint = [sender translationInView:self];
-                [self volumeChange:transPoint.y>0 ? 0.015:(-0.015)];
+                [self volumeChange:transPoint.y/VS_HEIGHT];
             }
         } else {
 //            self.videoSlider.vsValue
@@ -204,10 +203,10 @@ typedef enum : NSUInteger {
         if (self.currentDirection == kPanGesturemMoveHorizontal) {
             // 音量与亮度调节
             if (touchPoint.x < VS_WIDTH/2) {
-                [self brightnessChange:transPoint.y>0 ? 0.015:(-0.015)];
+                [self brightnessChange:touchPoint.y/VS_HEIGHT];
             } else {
-                CGPoint transPoint = [sender translationInView:self];
-                [self volumeChange:transPoint.y>0 ? 0.015:(-0.015)];
+                NSLog(@"音量改变：%@", @(touchPoint.y/VS_HEIGHT));
+                [self volumeChange:touchPoint.y/VS_HEIGHT];
             }
         }
     }
@@ -264,8 +263,8 @@ typedef enum : NSUInteger {
         if(status == AVPlayerStatusReadyToPlay){
             self.vpDurtaion = CMTimeGetSeconds(playerItem.duration);
         }
-        NSLog(@"%@", @(status));
-        NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
+//        NSLog(@"%@", @(status));
+//        NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
         [self playPause];
         
     } else if([keyPath isEqualToString:@"loadedTimeRanges"]) {
