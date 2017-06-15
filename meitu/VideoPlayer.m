@@ -72,26 +72,35 @@ typedef enum : NSUInteger {
     [self addSubview:self.bottomBar];
     
     UIButton *play = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    play.backgroundColor = [UIColor redColor];
+    [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"] forState:UIControlStateNormal];
+    [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"] forState:UIControlStateSelected];
+//    play.backgroundColor = [UIColor redColor];
+    play.center = CGPointMake(CGRectGetMidX(play.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:play];
 
     UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
-    next.backgroundColor = [UIColor redColor];
+    [next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"] forState:UIControlStateNormal];
+//    next.backgroundColor = [UIColor redColor];
+    next.center = CGPointMake(CGRectGetMidX(next.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:next];
     
     self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(70, 0, VS_WIDTH-190, 30)];
     [self.videoSlider addTarget:self
                          action:@selector(sliderAction:)
                forControlEvents:UIControlEventValueChanged];
+    self.videoSlider.center = CGPointMake(CGRectGetMidX(self.videoSlider.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:self.videoSlider];
     
     self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(VS_WIDTH-110, 0, 70, 30)];
     self.progressLabel.textColor = [UIColor whiteColor];
     self.progressLabel.font = [UIFont systemFontOfSize:10.0f];
+    self.progressLabel.center = CGPointMake(CGRectGetMidX(self.progressLabel.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:self.progressLabel];
     
     UIButton *fullScreen = [[UIButton alloc] initWithFrame:CGRectMake(VS_WIDTH-35, 0, 30, 30)];
-    fullScreen.backgroundColor = [UIColor redColor];
+    [fullScreen setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_maximize.png"] forState:UIControlStateNormal];
+//    fullScreen.backgroundColor = [UIColor redColor];
+    fullScreen.center = CGPointMake(CGRectGetMidX(fullScreen.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:fullScreen];
 }
 

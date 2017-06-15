@@ -17,6 +17,7 @@
 		26686CAE1E2DE8120006C334 /* meituUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26686CAD1E2DE8120006C334 /* meituUITests.m */; };
 		26686CBD1E2DEB710006C334 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26686CBC1E2DEB710006C334 /* CoreImage.framework */; };
 		2C34E6981EE6B10900C1D9EB /* VideoSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C34E6971EE6B10900C1D9EB /* VideoSlider.m */; };
+		2C7D3CC51EF25C6600A19B91 /* VideoPlayerResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2C7D3CC41EF25C6600A19B91 /* VideoPlayerResource.bundle */; };
 		2C9F02AB1EE503D1004D3089 /* FingerDrawLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */; };
 		2C9F02AE1EE50587004D3089 /* FingerLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F02AD1EE50587004D3089 /* FingerLineInfo.m */; };
 		2C9F02B01EE50858004D3089 /* timg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2C9F02AF1EE50858004D3089 /* timg.jpg */; };
@@ -62,6 +63,7 @@
 		2C34E6971EE6B10900C1D9EB /* VideoSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoSlider.m; sourceTree = "<group>"; };
 		2C43AC751EE6564D0038B6CE /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		2C43AC771EE68DCB0038B6CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		2C7D3CC41EF25C6600A19B91 /* VideoPlayerResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = VideoPlayerResource.bundle; sourceTree = "<group>"; };
 		2C9F02A91EE503D1004D3089 /* FingerDrawLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerDrawLine.h; sourceTree = "<group>"; };
 		2C9F02AA1EE503D1004D3089 /* FingerDrawLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FingerDrawLine.m; sourceTree = "<group>"; };
 		2C9F02AC1EE50587004D3089 /* FingerLineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FingerLineInfo.h; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		26686C871E2DE8120006C334 /* meitu */ = {
 			isa = PBXGroup;
 			children = (
+				2C7D3CC41EF25C6600A19B91 /* VideoPlayerResource.bundle */,
 				2C9F02AF1EE50858004D3089 /* timg.jpg */,
 				26686C8B1E2DE8120006C334 /* AppDelegate.h */,
 				26686C8C1E2DE8120006C334 /* AppDelegate.m */,
@@ -290,6 +293,7 @@
 				26686C981E2DE8120006C334 /* LaunchScreen.storyboard in Resources */,
 				26686C951E2DE8120006C334 /* Assets.xcassets in Resources */,
 				26686C931E2DE8120006C334 /* Main.storyboard in Resources */,
+				2C7D3CC51EF25C6600A19B91 /* VideoPlayerResource.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
