@@ -168,7 +168,7 @@ static const CGFloat BUTTON_HEIGHT = 28;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
-//    NSLog(@"continue state=[%zd]", self.state);
+    NSLog(@"continue state=[%zd]", self.state);
     self.vsState = VideoSliderStateChanging;
     if (self.isPressButton) {
         self.vsValue = [touch locationInView:self].x/VS_WIDTH;
@@ -186,7 +186,7 @@ static const CGFloat BUTTON_HEIGHT = 28;
 //    [super endTrackingWithTouch:touch withEvent:event];  // 系统默认处理
 }
 
-// 取消时会调用，如果当前视图被移除。或者来电
+// 取消时会调用，如果当前视图被移除。或者来电.或者一些未知的原因
 - (void)cancelTrackingWithEvent:(nullable UIEvent *)event {
 //    NSLog(@"cancel state=[%zd]", self.state);
     self.vsState = VideoSliderStateCancelled;

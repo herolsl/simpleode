@@ -36,6 +36,8 @@ typedef enum : NSUInteger {
 @property(nonatomic, strong) AVPlayer *player;
 
 @property(nonatomic, strong) UIView *bottomBar;
+@property(nonatomic, strong) UIButton *playButton;
+@property(nonatomic, strong) UIButton *next;
 @property(nonatomic, strong) UILabel *progressLabel;
 @property(nonatomic, strong) VideoSlider *videoSlider;
 
@@ -71,16 +73,17 @@ typedef enum : NSUInteger {
     self.bottomBar.hidden = NO;
     [self addSubview:self.bottomBar];
     
-    UIButton *play = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"] forState:UIControlStateNormal];
-    [play setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"] forState:UIControlStateSelected];
-    play.center = CGPointMake(CGRectGetMidX(play.frame), VS_BAR_HEIGHT/2);
-    [self.bottomBar addSubview:play];
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"] forState:UIControlStateNormal];
+    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"] forState:UIControlStateSelected];
+    self.playButton.center = CGPointMake(CGRectGetMidX(self.playButton.frame), VS_BAR_HEIGHT/2);
+    [self.playButton addTarget:self action:@selector(playOrPause) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomBar addSubview:self.playButton];
 
-    UIButton *next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
-    [next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"] forState:UIControlStateNormal];
-    next.center = CGPointMake(CGRectGetMidX(next.frame), VS_BAR_HEIGHT/2);
-    [self.bottomBar addSubview:next];
+    self.next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
+    [self.next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"] forState:UIControlStateNormal];
+    self.next.center = CGPointMake(CGRectGetMidX(self.next.frame), VS_BAR_HEIGHT/2);
+    [self.bottomBar addSubview:self.next];
     
     self.videoSlider = [[VideoSlider alloc] initWithFrame:CGRectMake(70, 0, VS_WIDTH-190, 30)];
     [self.videoSlider addTarget:self
@@ -101,20 +104,6 @@ typedef enum : NSUInteger {
     [self.bottomBar addSubview:fullScreen];
 }
 
-- (void)sliderAction:(VideoSlider *)sender {
-    
-    [self.player pause];
-    if (sender.vsState == VideoSliderStateEnded) {
-        CMTime currentCMTime = CMTimeMake(self.videoSlider.vsValue * self.vpDurtaion, 1);
-        [self.player seekToTime:currentCMTime completionHandler:^(BOOL finished) {
-            [self.player play];
-        }];
-    } else if (sender.vsState == VideoSliderStateChanging) {
-        self.progressLabel.text = [NSString stringWithFormat:@"%@/%@",
-                                   [self timeFormatted:sender.vsValue*self.vpDurtaion],
-                                   [self timeFormatted:self.vpDurtaion]];
-    }
-}
 
 - (void)setVideoURL:(NSString *)videoURL {
     _videoURL = videoURL;
@@ -128,11 +117,26 @@ typedef enum : NSUInteger {
 
 - (void)playOrPause {
     if(self.player.rate == 0.0){      //pause
-//        btn.selected = YES;
+        self.playButton.selected = YES;
         [self.player play];
     }else if(self.player.rate == 1.0f){    //playing
         [self.player pause];
-//        btn.selected = NO;
+        self.playButton.selected = NO;
+    }
+}
+
+- (void)sliderAction:(VideoSlider *)sender {
+    
+    [self.player pause];
+    if (sender.vsState == VideoSliderStateChanging) {
+        self.progressLabel.text = [NSString stringWithFormat:@"%@/%@",
+                                   [self timeFormatted:sender.vsValue*self.vpDurtaion],
+                                   [self timeFormatted:self.vpDurtaion]];
+    } else {
+        CMTime currentCMTime = CMTimeMake(self.videoSlider.vsValue * self.vpDurtaion, 1);
+        [self.player seekToTime:currentCMTime completionHandler:^(BOOL finished) {
+            [self.player play];
+        }];
     }
 }
 
@@ -182,7 +186,7 @@ typedef enum : NSUInteger {
     
     BOOL isFullScreen = VS_WIDTH == [UIScreen mainScreen].bounds.size.width ? NO:YES;
     CGPoint touchPoint = [sender locationInView:self];
-    NSLog(@"touchPoint is x:%@,   y:%@", @(touchPoint.x), @(touchPoint.y));
+//    NSLog(@"touchPoint is x:%@,   y:%@", @(touchPoint.x), @(touchPoint.y));
 
     CGPoint transPoint = [sender translationInView:self];
     
@@ -191,23 +195,28 @@ typedef enum : NSUInteger {
             // 音量与亮度调节
             if (touchPoint.y < VS_HEIGHT/2) {
 //                [self brightnessChange:transPoint.y>0 ? 0.015:(-0.015)];
-                [self brightnessChange:transPoint.y/VS_HEIGHT];
+                [self brightnessChange:transPoint.x/VS_HEIGHT];
             } else {
-                CGPoint transPoint = [sender translationInView:self];
-                [self volumeChange:transPoint.y/VS_HEIGHT];
+//                CGPoint transPoint = [sender translationInView:self];
+                [self volumeChange:transPoint.x/VS_HEIGHT];
             }
         } else {
-//            self.videoSlider.vsValue
+            self.videoSlider.vsValue += transPoint.y/VS_WIDTH;
+            [self sliderAction:self.videoSlider];
         }
     } else {
         if (self.currentDirection == kPanGesturemMoveHorizontal) {
             // 音量与亮度调节
             if (touchPoint.x < VS_WIDTH/2) {
-                [self brightnessChange:touchPoint.y/VS_HEIGHT];
+                [self brightnessChange:transPoint.y/VS_HEIGHT];
             } else {
-                NSLog(@"音量改变：%@", @(touchPoint.y/VS_HEIGHT));
-                [self volumeChange:touchPoint.y/VS_HEIGHT];
+                NSLog(@"音量改变：%@", @(transPoint.y/VS_HEIGHT));
+                [self volumeChange:transPoint.y/VS_HEIGHT];
             }
+        } else {
+            
+            self.videoSlider.vsValue += transPoint.x/VS_WIDTH;
+            [self sliderAction:self.videoSlider];
         }
     }
 }
@@ -229,7 +238,15 @@ typedef enum : NSUInteger {
     }];
 }
 
--(void)addObserverToPlayerItem:(AVPlayerItem *)playerItem{
+- (void)addObserverToPlayer:(AVPlayer *)player {
+    [player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)removeObserverToPlayer:(AVPlayer *)player {
+    [player removeObserver:self forKeyPath:@"timeControlStatus"];
+}
+
+- (void)addObserverToPlayerItem:(AVPlayerItem *)playerItem {
     
     // 监控状态属性，注意AVPlayer也有一个status属性，通过监控它的status也可以获得播放状态
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
@@ -256,12 +273,11 @@ typedef enum : NSUInteger {
                         change:(NSDictionary *)change
                        context:(void *)context {
     
-    AVPlayerItem *playerItem = object;
     if ([keyPath isEqualToString:@"status"]) {
         
         AVPlayerItemStatus status = self.playerItem.status;
         if(status == AVPlayerStatusReadyToPlay){
-            self.vpDurtaion = CMTimeGetSeconds(playerItem.duration);
+            self.vpDurtaion = CMTimeGetSeconds(self.playerItem.duration);
         }
 //        NSLog(@"%@", @(status));
 //        NSLog(@"%@", @(CMTimeGetSeconds(playerItem.duration)));
@@ -269,7 +285,7 @@ typedef enum : NSUInteger {
         
     } else if([keyPath isEqualToString:@"loadedTimeRanges"]) {
         
-        NSArray *array = playerItem.loadedTimeRanges;
+        NSArray *array = self.playerItem.loadedTimeRanges;
         //本次缓冲时间范围
         CMTimeRange timeRange = [array.firstObject CMTimeRangeValue];
         float startSeconds = CMTimeGetSeconds(timeRange.start);
@@ -296,7 +312,12 @@ typedef enum : NSUInteger {
         
         NSLog(@"缓冲达到可播放程度了");
         //由于 AVPlayer 缓存不足就会自动暂停，所以缓存充足了需要手动播放，才能继续播放
-        [self.player play];
+        if (self.playButton.selected) {
+            [self.player play];
+        }
+    } else if ([keyPath isEqualToString:@"timeControlStatus"]) {
+        // 播放器播放状态监控
+        self.playButton.selected = (self.player.timeControlStatus != AVPlayerTimeControlStatusPaused);
     }
 }
 
@@ -332,6 +353,7 @@ typedef enum : NSUInteger {
         
         [self addProgressObserver];
         [self addObserverToPlayerItem:self.playerItem];
+        [self addObserverToPlayer:self.player];
         [self addObserver:self forKeyPath:@"currentProgress" options:NSKeyValueObservingOptionOld context:nil];
         
         if (self.player.currentItem != self.playerItem) {
@@ -373,9 +395,9 @@ typedef enum : NSUInteger {
 
 - (void)dealloc {
     
-    [self.playerItem removeObserver:self forKeyPath:@"status"];
-    [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [self removeObserverToPlayerItem:self.playerItem];
     [self removeObserver:self forKeyPath:@"currentProgress"];
+    [self removeObserverToPlayer:self.player];
 }
 
 #pragma mark - system volume
