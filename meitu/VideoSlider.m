@@ -168,7 +168,7 @@ static const CGFloat BUTTON_HEIGHT = 28;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
-    NSLog(@"continue state=[%zd]", self.state);
+//    NSLog(@"continue state=[%zd]", self.state);
     self.vsState = VideoSliderStateChanging;
     if (self.isPressButton) {
         self.vsValue = [touch locationInView:self].x/VS_WIDTH;

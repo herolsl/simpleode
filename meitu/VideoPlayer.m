@@ -34,10 +34,12 @@ typedef enum : NSUInteger {
 @property(nonatomic, strong) AVPlayerLayer *playerLayer;
 @property(nonatomic, strong) AVPlayerItem *playerItem;
 @property(nonatomic, strong) AVPlayer *player;
+@property(nonatomic) CGRect originalFrame;
 
 @property(nonatomic, strong) UIView *bottomBar;
 @property(nonatomic, strong) UIButton *playButton;
 @property(nonatomic, strong) UIButton *next;
+@property(nonatomic, strong) UIButton *fullScreen;
 @property(nonatomic, strong) UILabel *progressLabel;
 @property(nonatomic, strong) VideoSlider *videoSlider;
 
@@ -52,8 +54,9 @@ typedef enum : NSUInteger {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor blackColor];
-        self.currentProgress = 0.0f;
+        self.originalFrame = frame;
         [self creatInitialUI];
+        [self registerSystemNotigication];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                               action:@selector(tapGestureAction:)];
@@ -74,14 +77,18 @@ typedef enum : NSUInteger {
     [self addSubview:self.bottomBar];
     
     self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"] forState:UIControlStateNormal];
-    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"] forState:UIControlStateSelected];
+    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_play.png"]
+                     forState:UIControlStateNormal];
+    [self.playButton setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_pause.png"]
+                     forState:UIControlStateSelected];
     self.playButton.center = CGPointMake(CGRectGetMidX(self.playButton.frame), VS_BAR_HEIGHT/2);
-    [self.playButton addTarget:self action:@selector(playOrPause) forControlEvents:UIControlEventTouchUpInside];
+    [self.playButton addTarget:self action:@selector(playOrPause)
+              forControlEvents:UIControlEventTouchUpInside];
     [self.bottomBar addSubview:self.playButton];
 
     self.next = [[UIButton alloc] initWithFrame:CGRectMake(35, 0, 30, 30)];
-    [self.next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"] forState:UIControlStateNormal];
+    [self.next setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_next.png"]
+               forState:UIControlStateNormal];
     self.next.center = CGPointMake(CGRectGetMidX(self.next.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:self.next];
     
@@ -98,10 +105,15 @@ typedef enum : NSUInteger {
     self.progressLabel.center = CGPointMake(CGRectGetMidX(self.progressLabel.frame), VS_BAR_HEIGHT/2);
     [self.bottomBar addSubview:self.progressLabel];
     
-    UIButton *fullScreen = [[UIButton alloc] initWithFrame:CGRectMake(VS_WIDTH-35, 0, 30, 30)];
-    [fullScreen setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_maximize.png"] forState:UIControlStateNormal];
-    fullScreen.center = CGPointMake(CGRectGetMidX(fullScreen.frame), VS_BAR_HEIGHT/2);
-    [self.bottomBar addSubview:fullScreen];
+    self.fullScreen = [[UIButton alloc] initWithFrame:CGRectMake(VS_WIDTH-35, 0, 30, 30)];
+    [self.fullScreen setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_maximize.png"]
+                forState:UIControlStateNormal];
+    [self.fullScreen setImage:[UIImage imageNamed:@"VideoPlayerResource.bundle/vp_minimize.png"]
+                     forState:UIControlStateSelected];
+    self.fullScreen.center = CGPointMake(CGRectGetMidX(self.fullScreen.frame), VS_BAR_HEIGHT/2);
+    [self.fullScreen addTarget:self action:@selector(fullScreenButtonActon:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomBar addSubview:self.fullScreen];
 }
 
 
@@ -155,6 +167,74 @@ typedef enum : NSUInteger {
     }
 }
 
+#pragma mark - System Notifications 
+- (void)registerSystemNotigication {
+    //screen orientation change
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullScreenWithNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appwillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+#pragma mark - Screen Orientation
+
+- (void)fullScreenButtonActon:(UIButton *)sender {
+    if (sender.selected) {
+        [self backOriginalFrame];
+    } else {
+        [self fullScreenWithNotification:nil];
+    }
+}
+
+- (void)fullScreenWithNotification:(NSNotification *)notification {
+    
+    NSInteger current = [[UIDevice currentDevice] orientation];
+    if (current == UIDeviceOrientationFaceUp || current == UIDeviceOrientationFaceDown) {
+        return;
+    }
+
+    if (!notification) {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIDeviceOrientationLandscapeRight] forKey:@"orientation"];
+    }
+    [self updateConstraintsIfNeeded];
+
+    current = [[UIDevice currentDevice] orientation];
+    NSLog(@"orientation is %@", @(current));
+    [UIView animateWithDuration:0.3f animations:^{
+        
+        if (current != UIDeviceOrientationLandscapeLeft && current != UIDeviceOrientationLandscapeRight) {
+            
+            self.frame = self.originalFrame;
+            self.playerLayer.frame = self.bounds;
+        } else {
+            
+            self.frame = [UIScreen mainScreen].bounds;
+            self.playerLayer.frame = self.frame;
+        }
+    } completion:^(BOOL finished) {
+        
+        self.fullScreen.selected = !CGRectEqualToRect(self.frame, self.originalFrame);
+    }];
+}
+
+- (void)backOriginalFrame {
+    
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIDeviceOrientationPortrait] forKey:@"orientation"];
+    [self updateConstraintsIfNeeded];
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        
+        self.frame = self.originalFrame;
+        self.playerLayer.frame = self.bounds;
+    } completion:^(BOOL finished) {
+        
+        self.fullScreen.selected = NO;
+    }];
+}
+
 #pragma mark - system actions
 
 - (void)brightnessChange:(CGFloat)value {
@@ -173,6 +253,7 @@ typedef enum : NSUInteger {
     [self bottomBarAnimation];
 }
 
+#warning 待优化
 - (void)panGestureAction:(UIPanGestureRecognizer *)sender {
     
     if (sender.state != UIGestureRecognizerStateChanged) {
