@@ -14,7 +14,7 @@
 #import "VideoSlider.h"
 
 static const CGFloat LINE_HEIGHT = 2;
-static const CGFloat BUTTON_HEIGHT = 28;
+static const CGFloat BUTTON_HEIGHT = 15;
 
 @interface VideoSlider()
 
@@ -52,13 +52,16 @@ static const CGFloat BUTTON_HEIGHT = 28;
     
     self.sliderAbove = [[UIImageView alloc] init];
     [self addSubview:self.sliderAbove];
-    
+
+    self.sliderButtonBack = [[UIImageView alloc] init];
+    [self addSubview:self.sliderButtonBack];
+
     self.sliderButton = [[UIImageView alloc] init];
     self.sliderButton.layer.shadowOffset = CGSizeMake(0, 3);
     self.sliderButton.layer.shadowRadius = 3;
     self.sliderButton.layer.shadowOpacity = 0.4f;
     self.sliderButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    [self addSubview:self.sliderButton];
+    [self.sliderButtonBack addSubview:self.sliderButton];
 //    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderValueChange:)];
 //    [self.sliderButton addGestureRecognizer:pan];
 
@@ -140,8 +143,13 @@ static const CGFloat BUTTON_HEIGHT = 28;
     } else {
         btnCenterX = self.vsValue*VS_WIDTH;
     }
+
+    [self.sliderButtonBack setFrame:CGRectMake(0, 0, 50, 40)];
+    self.sliderButtonBack.center = CGPointMake(btnCenterX, VS_HEIGHT/2);
+    self.sliderButtonBack.backgroundColor = [UIColor clearColor];
+
     [self.sliderButton setFrame:CGRectMake(0, 0, BUTTON_HEIGHT, BUTTON_HEIGHT)];
-    [self.sliderButton setCenter:CGPointMake(btnCenterX, VS_HEIGHT/2)];
+    [self.sliderButton setCenter:CGPointMake(25, 20)];
     self.sliderButton.backgroundColor = self.thumbColor ? :[UIColor whiteColor];
     self.sliderButton.layer.cornerRadius = BUTTON_HEIGHT/2;
 }
@@ -161,8 +169,8 @@ static const CGFloat BUTTON_HEIGHT = 28;
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event {
 //    NSLog(@"begin state=[%zd]", self.state);
     self.vsState = VideoSliderStateBegan;
-    CGPoint startPoint = [touch locationInView:self.sliderButton];
-    self.isPressButton = CGRectContainsPoint(self.sliderButton.bounds, startPoint);
+    CGPoint startPoint = [touch locationInView:self.sliderButtonBack];
+    self.isPressButton = CGRectContainsPoint(self.sliderButtonBack.bounds, startPoint);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     return YES;
 }
